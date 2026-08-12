@@ -1,0 +1,153 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'tool/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+    inputs:
+      subversion:
+        description: 'Sub-version (eg: 46)'
+        required: true
+        type: string
+      platform:
+        description: 'platform'
+        required: true
+        default: 'Merged'
+        type: choice
+        options:
+        - Android
+        - Windows
+        - IOS
+        - Merged
+        - All
+
+env:
+  # manual runs use the number typed in; pushes fall back to the run number
+  subversion: ${{ github.event.inputs.subversion || github.run_number }}
+
+permissions:
+  contents: write   # needed for the release job to publish a release
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    if:  ${{ (github.event.inputs.platform == 'Windows') || (github.event.inputs.platform == 'All') || github.event_name == 'push' }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    - uses: actions/cache@v4
+      with:
+        key: env-files-win-laz
+        path: |
+          ${{ github.workspace }}/tool/data
+    - run: pip install -r requirements.txt
+    - run: |
+        .\build.bat setup
+        .\build.bat pack -p windows -v ${{ env.subversion }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: newb-x-windows
+        path: ./build/*.mcpack
+  android:
+    runs-on: ubuntu-latest
+    if:  ${{ (github.event.inputs.platform == 'Android') || (github.event.inputs.platform == 'All') || github.event_name == 'push' }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    - uses: actions/cache@v4
+      with:
+        key: env-files-linux-laz
+        path: |
+          ${{ github.workspace }}/tool/data
+    - run: pip install -r requirements.txt
+    - run: |
+        bash build.sh setup
+        bash build.sh pack -p android -v ${{ env.subversion }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: newb-x-android
+        path: ./build/*.mcpack
+  ios:
+    runs-on: ubuntu-latest
+    if:  ${{ (github.event.inputs.platform == 'IOS') || (github.event.inputs.platform == 'All') || github.event_name == 'push' }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    - uses: actions/cache@v4
+      with:
+        key: env-files-linux-laz
+        path: |
+          ${{ github.workspace }}/tool/data
+    - run: pip install -r requirements.txt
+    - run: |
+        bash build.sh setup
+        bash build.sh pack -p ios -v ${{ env.subversion }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: newb-x-ios
+        path: ./build/*.mcpack
+  merged:
+    runs-on: windows-2022
+    if:  ${{ (github.event.inputs.platform == 'Merged') || (github.event.inputs.platform == 'All') || github.event_name == 'push' }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    - uses: actions/cache@v4
+      with:
+        key: env-files-win-laz
+        path: |
+          ${{ github.workspace }}/tool/data
+    - run: pip install -r requirements.txt
+    - run: |
+        .\build.bat setup
+        .\build.bat pack -p merged -v ${{ env.subversion }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: newb-x-merged
+        path: ./build/*.mcpack
+
+  release:
+    name: Publish release
+    runs-on: ubuntu-latest
+    needs: [windows, android, ios, merged]
+    # only publish when every platform was actually built (push, or manual "All")
+    if: |
+      always() &&
+      (github.event_name == 'push' || github.event.inputs.platform == 'All') &&
+      needs.windows.result == 'success' &&
+      needs.android.result == 'success' &&
+      needs.ios.result == 'success' &&
+      needs.merged.result == 'success'
+    steps:
+    - name: Download all platform packs
+      uses: actions/download-artifact@v4
+      with:
+        pattern: newb-x-*
+        path: release-assets
+        merge-multiple: true
+    - name: Publish GitHub release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ env.subversion }}
+        name: Build ${{ env.subversion }}
+        files: release-assets/*.mcpack
+        prerelease: ${{ github.event_name == 'push' }}
