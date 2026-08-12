@@ -25,3 +25,9 @@ Contact (Discord Server): https://discord.gg/newb-community-844591537430069279
 credits = '''
 '''
 
+[[subpack]]
+define = "DEFAULT"
+materials = []
+description = '''
+Default
+'''
