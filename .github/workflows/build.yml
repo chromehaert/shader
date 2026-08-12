@@ -151,3 +151,4 @@ jobs:
         name: Build ${{ env.subversion }}
         files: release-assets/*.mcpack
         prerelease: ${{ github.event_name == 'push' }}
+      
