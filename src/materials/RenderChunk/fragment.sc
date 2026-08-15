@@ -31,7 +31,7 @@ void main() {
     #endif
 
   if (((diffuseAlpha > 0.9875) && (diffuseAlpha < 0.995))) {
-    diffuse.rgb = vec3(1.0, 1.0, 1.0);
+    diffuse.rgb *= vec3(1.0, 1.0, 1.0);
   } else {
     diffuse.rgb *= texture2D(s_LightMapTexture, v_lightmapUV).xyz;
   };
