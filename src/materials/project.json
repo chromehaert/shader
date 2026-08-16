@@ -2,7 +2,7 @@
   "base_profile": {
     "platforms": ["ESSL_300"],
     "merge_source": ["../../tool/data/materials"],
-    "include_patterns": [ "RenderChunk", "Actor", "ActorGlint", "ActorBanner", "Clouds" ],
+    "include_patterns": [ "RenderChunk", "Actor", "ActorGlint", "ActorBanner" ],
     "exclude_patterns": [".*", "_*"],
     "include_search_paths": ["../../src", "../../include"]
   },

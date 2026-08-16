@@ -33,7 +33,7 @@ void main() {
   if (((diffuseAlpha > 0.9875) && (diffuseAlpha < 0.995))) {
     diffuse.rgb *= vec3(1.0, 1.0, 1.0);
   } else {
-    diffuse.rgb *= texture2D(s_LightMapTexture, v_lightmapUV).xyz;
+    diffuse.rgb *= dot((texture2D(s_LightMapTexture, v_lightmapUV).xyz),vec3(0.2126, 0.7152, 0.0722));
   };
 
     diffuse.rgb = mix(diffuse.rgb, v_fog.rgb, v_fog.a);
