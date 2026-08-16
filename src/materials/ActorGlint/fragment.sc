@@ -52,7 +52,7 @@ void main() {
 
   vec4 light = v_light;
 
-    albedo = applyGlint(albedo, v_layerUv, s_MatTexture1, GlintColor, TileLightColor);
+    albedo = applyGlint(albedo, v_glintuv, s_MatTexture1, GlintColor, TileLightColor);
 
   albedo = applyLighting(albedo, light);
 
