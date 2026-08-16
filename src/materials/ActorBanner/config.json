@@ -1,0 +1,23 @@
+{
+  "macro_overwrite": {
+    "flag": {
+      "Change_Color": {
+        "On": [ "CHANGE_COLOR" ],
+        "Multi": [ "CHANGE_COLOR_MULTI" ],
+        "Off": []
+      },
+      "Emissive": {
+        "Emissive": [ "EMISSIVE" ],
+        "EmissiveOnly": [ "EMISSIVE_ONLY" ],
+        "Off": []
+      }
+    }
+  },
+  "file_overwrite": {
+    "default": {
+      "fragment": "fragment.sc",
+      "vertex": "vertex.sc",
+      "varying": "varying.def.sc"
+    }
+  }
+}
