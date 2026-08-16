@@ -45,8 +45,9 @@ void main() {
 
     float lightIntensity = calculateLightIntensity(World, vec4(a_normal.xyz, 0.0), TileLightColor);
     lightIntensity += OverlayColor.a * 0.35;
-    float grayscale = dot(TileLightColor.rgb,vec3(0.299, 0.587, 0.114));
-    vec4 light = vec4(lightIntensity * vec3(grayscale,grayscale,grayscale), 1.0);
+    vec4 light = vec4(lightIntensity * TileLightColor.rgb, 1.0);
+    float grayscale = dot(light.rgb,vec3(0.299, 0.587, 0.114));
+    light.rgb = vec3(grayscale,grayscale,grayscale);
 
     float cameraDepth = position.z;
     float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);

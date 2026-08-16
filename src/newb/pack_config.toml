@@ -1,22 +1,22 @@
-name = "Newb Classic"
-version = [0, 16, 53]
-min_supported_mc_version = [1, 26, 30]
+name = "classic graphics"
+version = [0, 0, 0]
+min_supported_mc_version = [1, 26, 40]
 description = '''
-''' # %w = patch warning, %v = version
-authors = ["devendrn"]
-url = "https://newb-shader.devendrn.com/"
-uuid = "95f774cf-4afa-73e7-a21a-72146307b1d2" # Use https://www.uuidgenerator.net/version4
+'''
+authors = ["chromehaert"]
+url = ""
+uuid = "95f774cf-4afa-73e7-a21a-72146307b1d2"
 materials = ["RenderChunk", "Actor", "ActorGlint"]
 
 [info] 
 copyright = '''
-''' # %a = authors
+'''
 credits = '''
 '''
 
 [[subpack]]
-define = "DEFAULT"
+define = "chromehaert"
 materials = []
 description = '''
-Default
+chromehaert
 '''
