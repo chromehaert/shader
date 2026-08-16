@@ -2,6 +2,7 @@ $input v_color0, v_fog, v_light, v_texcoord0, v_glintuv
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/ActorUtil.dragonh>
+#include <MinecraftRenderer.Materials/GlintUtil.dragonh>
 
 uniform vec4 ColorBased;
 uniform vec4 ChangeColor;
@@ -51,7 +52,7 @@ void main() {
 
   vec4 light = v_light;
 
-  light = nlGlint(light, v_glintuv, s_MatTexture1, GlintColor, TileLightColor, albedo);
+    albedo = applyGlint(albedo, v_layerUv, s_MatTexture1, GlintColor, TileLightColor);
 
   albedo = applyLighting(albedo, light);
 
