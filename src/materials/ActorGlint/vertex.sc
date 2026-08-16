@@ -54,7 +54,7 @@ void main() {
     v_texcoord0 = texcoord0;
     v_glintuv = glintuv;
     v_color0 = a_color0;
-    v_fog = fogColor;
+    v_fog = FogColor;
     v_light = vec4(light, 1.0);
   #endif
 
