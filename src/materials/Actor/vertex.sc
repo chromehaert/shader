@@ -8,6 +8,7 @@ $output v_color0, v_fog, v_light, v_texcoord0
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/DynamicUtil.dragonh>
 #include <MinecraftRenderer.Materials/TAAUtil.dragonh>
+#include <MinecraftRenderer.Materials/FogUtil.dragonh>
 
 uniform vec4 OverlayColor;
 uniform vec4 TileLightColor;
@@ -46,9 +47,13 @@ void main() {
     lightIntensity += OverlayColor.a * 0.35;
     vec4 light = vec4(lightIntensity * TileLightColor.rgb, 1.0);
 
+    float cameraDepth = position.z;
+    float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
+    vec4 fog = vec4(FogColor.rgb, fogIntensity);
+
     v_texcoord0 = texcoord0;
     v_color0 = a_color0;
-    v_fog = FogColor;
+    v_fog = fog;
     v_light = light;
   #endif
 

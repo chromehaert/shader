@@ -8,6 +8,7 @@ $output v_color0, v_fog, v_light, v_texcoord0, v_glintuv
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/DynamicUtil.dragonh>
 #include <MinecraftRenderer.Materials/TAAUtil.dragonh>
+#include <MinecraftRenderer.Materials/FogUtil.dragonh>
 #include <MinecraftRenderer.Materials/GlintUtil.dragonh>
 
 uniform vec4 OverlayColor;
@@ -47,6 +48,10 @@ void main() {
     lightIntensity += OverlayColor.a * 0.35;
     vec4 light = vec4(lightIntensity * TileLightColor.rgb, 1.0);
 
+    float cameraDepth = position.z;
+    float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
+    vec4 fog = vec4(FogColor.rgb, fogIntensity);
+
     vec4 glintuv;
     glintuv.xy = calculateLayerUV(texcoord0, UVAnimation.x, UVAnimation.z, UVScale.xy);
     glintuv.zw = calculateLayerUV(texcoord0, UVAnimation.y, UVAnimation.w, UVScale.xy);
@@ -54,7 +59,7 @@ void main() {
     v_texcoord0 = texcoord0;
     v_glintuv = glintuv;
     v_color0 = a_color0;
-    v_fog = FogColor;
+    v_fog = fog;
     v_light = light;
   #endif
 
