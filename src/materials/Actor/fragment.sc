@@ -49,8 +49,6 @@ void main() {
 
   albedo = applyOverlayColor(albedo, OverlayColor);
 
-  albedo *= albedo;
-
   vec4 light = v_light;
 
   albedo = applyLighting(albedo, light);

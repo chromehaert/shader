@@ -48,8 +48,6 @@ void main() {
 
   albedo = applyOverlayColor(albedo, OverlayColor);
 
-  albedo *= albedo;
-
   vec4 light = v_light;
 
     albedo = applyGlint(albedo, v_glintuv, s_MatTexture1, GlintColor, TileLightColor);
