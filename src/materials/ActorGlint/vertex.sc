@@ -10,6 +10,7 @@ $output v_color0, v_fog, v_light, v_texcoord0, v_glintuv
 #include <MinecraftRenderer.Materials/TAAUtil.dragonh>
 #include <MinecraftRenderer.Materials/FogUtil.dragonh>
 #include <MinecraftRenderer.Materials/GlintUtil.dragonh>
+#include <utils/grayscale.h>
 
 uniform vec4 OverlayColor;
 uniform vec4 TileLightColor;
@@ -47,8 +48,7 @@ void main() {
     float lightIntensity = calculateLightIntensity(World, vec4(a_normal.xyz, 0.0), TileLightColor);
     lightIntensity += OverlayColor.a * 0.35;
     vec4 light = vec4(lightIntensity * TileLightColor.rgb, 1.0);
-    float grayscale = dot(light.rgb,vec3(0.299, 0.587, 0.114));
-    light.rgb = vec3(grayscale,grayscale,grayscale);
+    light.rgb = grayscale(light.rgb);
 
     float cameraDepth = position.z;
     float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
