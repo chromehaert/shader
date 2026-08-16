@@ -40,19 +40,6 @@ def mlabel(
     is_supported: bool,
     flags: dict,
 ):
-    global _name, _current_subpack
-
-    if not any(
-        self.platform.name.startswith(platform_prefix)
-        for platform_prefix in ["ESSL", "GLSL", "Metal"]
-    ):
-        return self
-
-    comment = (f"// {_name} ({_current_subpack})")
-    code = self.bgfx_shader.shader_bytes.decode()
-    code = util.insert_header_comment(code, comment)
-    self.bgfx_shader.shader_bytes = code.encode()
-
     return self
 
 
