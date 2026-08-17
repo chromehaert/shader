@@ -1,4 +1,4 @@
-$input v_color0, v_fog, v_light, v_texcoord0, v_texcooords
+$input v_color0, v_fog, v_light, v_texcoord0
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/ActorUtil.dragonh>
@@ -15,6 +15,7 @@ uniform vec4 HudOpacity;
 
 SAMPLER2D_AUTOREG(s_MatTexture);
 SAMPLER2D_AUTOREG(s_MatTexture1);
+SAMPLER2D_AUTOREG(s_MatTexture2);
 
 void main() {
   #if defined(DEPTH_ONLY) || defined(INSTANCING)
@@ -25,22 +26,11 @@ void main() {
     return;
   #endif
 
-#if !ALPHA_TEST
-    vec4 diffuse = texture2D(s_MatTexture, v_texcoords.xy);
-    vec4 base = texture2D(s_MatTexture, v_texcoords.zw);
-
-    #if TINTING
-      base.a = mix(diffuse.r * diffuse.a, diffuse.a, v_color0.a);
-      base.rgb *= v_color0.rgb;
-    #endif
-
-    base = applyLighting(base, v_light);
-    base = applyHudOpacity(base, HudOpacity.x);
-    base.rgb = applyFog(base.rgb, v_fog.rgb, v_fog.a);
-
-  gl_FragColor = base;
-#else
   vec4 albedo = getActorAlbedoNoColorChange(v_texcoord0, s_MatTexture, s_MatTexture1, MatColor);
+
+  vec4 tex1 = texture2D(s_MatTexture1, v_texcoord0);
+  vec4 tex2 = texture2D(s_MatTexture2, v_texcoord0);
+  albedo = mix(mix(albedo, tex1, tex1.a), tex2, tex2.a);
 
   #ifdef ALPHA_TEST
     float alpha = mix(albedo.a, (albedo.a * OverlayColor.a), TintedAlphaTestEnabled.x);
@@ -73,5 +63,4 @@ void main() {
   albedo.rgb = mix(albedo.rgb, v_fog.rgb, v_fog.a);
 
   gl_FragColor = albedo;
-#endif // !ALPHA_TEST
 }

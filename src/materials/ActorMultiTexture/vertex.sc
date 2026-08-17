@@ -3,7 +3,7 @@ $input a_position, a_color0, a_texcoord0, a_indices, a_normal
   $input i_data0, i_data1, i_data2
 #endif
 
-$output v_color0, v_fog, v_light, v_texcoord0, v_texcoords
+$output v_color0, v_fog, v_light, v_texcoord0
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/DynamicUtil.dragonh>
@@ -18,9 +18,10 @@ uniform vec4 UVAnimation;
 uniform mat4 Bones[8];
 uniform vec4 ViewPositionAndTime;
 uniform vec4 RenderDistance;
+uniform vec4 DimensionID;
+uniform vec4 TimeOfDay;
+uniform vec4 Day;
 uniform vec4 CameraPosition;
-uniform vec4 BannerColors[7];
-uniform vec4 BannerUVOffsetsAndScales[7];
 
 void main() {
   mat4 World = u_model[0];
@@ -40,10 +41,7 @@ void main() {
 
   vec4 position = jitterVertexPosition(worldPosition);
 
-    vec4 texcoords;
-    int frameIndex = int(a_color0.w * 255.0);
-    texcoords.xy = (texcoord0 * BannerUVOffsetsAndScales[frameIndex].zw) + BannerUVOffsetsAndScales[frameIndex].xy;
-    texcoords.zw = (texcoord0 * BannerUVOffsetsAndScales[0].zw) + BannerUVOffsetsAndScales[0].xy;
+  #if !(defined(DEPTH_ONLY_OPAQUE) || defined(DEPTH_ONLY) || defined(INSTANCING))
 
     float lightIntensity = calculateLightIntensity(World, vec4(a_normal.xyz, 0.0), TileLightColor);
     lightIntensity += OverlayColor.a * 0.35;
@@ -55,32 +53,11 @@ void main() {
     float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
     vec4 fog = vec4(FogColor.rgb, fogIntensity);
 
-    vec4 color;
-#if !ALPHA_TEST && !DEPTH_ONLY_OPAQUE && TINTING
-	color = BannerColors[frameIndex];
-	color.a = 1.0;
-	if (frameIndex > 0) {
-	    color.a = 0.0;
-	}
-#else
-    color = a_color0;
-#endif
-
-#if DEPTH_ONLY
-    v_texcoord0 = vec2(0.0, 0.0);
-    v_color0 = vec4(0.0, 0.0, 0.0, 0.0);
-#else
     v_texcoord0 = texcoord0;
-    v_color0 = color;
-#endif
-
-#if ALPHA_TEST || DEPTH_ONLY_OPAQUE
-    v_texcoords = vec4(0.0, 0.0, 0.0, 0.0);
-#else
-    v_texcoords = texcoords;
-#endif
-
+    v_color0 = a_color0;
     v_fog = fog;
     v_light = light;
+  #endif
+
   gl_Position = position;
 }

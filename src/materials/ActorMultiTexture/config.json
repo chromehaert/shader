@@ -1,6 +1,10 @@
 {
   "macro_overwrite": {
     "flags": {
+      "ColorSecondTexture": {
+        "On":"COLOR_SECOND_TEXTURE",
+        "Off":[]
+      },
       "Change_Color": {
         "On": "CHANGE_COLOR",
         "Multi": "CHANGE_COLOR_MULTI",
@@ -11,8 +15,16 @@
         "EmissiveOnly": "EMISSIVE_ONLY",
         "Off": []
       },
-      "Tinting": {
-        "On": ["TINTING"],
+      "Fancy": {
+        "On": "FANCY",
+        "Off": []
+      },
+      "Instancing": {
+        "On": "INSTANCING",
+        "Off": []
+      },
+      "MaskedMultitexture": {
+        "On": "MASKED_MULTITEXTURE",
         "Off": []
       }
     },
