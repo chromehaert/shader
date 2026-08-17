@@ -1,4 +1,4 @@
-$input v_color0, v_fog, v_light, v_texcoord0
+$input v_color0, v_fog, v_light, v_texcoord0, v_texcooords
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/ActorUtil.dragonh>
@@ -25,6 +25,21 @@ void main() {
     return;
   #endif
 
+#if !ALPHA_TEST
+    vec4 diffuse = texture2D(s_MatTexture, v_texcoords.xy);
+    vec4 base = texture2D(s_MatTexture, v_texcoords.zw);
+
+    #if TINTING
+      base.a = mix(diffuse.r * diffuse.a, diffuse.a, v_color0.a);
+      base.rgb *= v_color0.rgb;
+    #endif
+
+    base = applyLighting(base, v_light);
+    base = applyHudOpacity(base, HudOpacity.x);
+    base.rgb = applyFog(base.rgb, v_fog.rgb, v_fog.a);
+
+  gl_FragColor = base;
+#else
   vec4 albedo = getActorAlbedoNoColorChange(v_texcoord0, s_MatTexture, s_MatTexture1, MatColor);
 
   #ifdef ALPHA_TEST
@@ -58,4 +73,5 @@ void main() {
   albedo.rgb = mix(albedo.rgb, v_fog.rgb, v_fog.a);
 
   gl_FragColor = albedo;
+#endif // !ALPHA_TEST
 }
