@@ -24,6 +24,8 @@ uniform vec4 CameraPosition;
 
 void main() {
   mat4 World = u_model[0];
+  vec2 uv0 = 2.0*a_texcoord0.xy;
+  uv0 = fract(uv0) + ((floor(uv0)-0.5)/16384.0);
   vec3 wpos;
 
   #ifdef INSTANCING
@@ -46,7 +48,7 @@ void main() {
     float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
     vec4 fog = vec4(FogColor.rgb, fogIntensity);
 
-    v_texcoord0 = texcoord0;
+    v_texcoord0 = uv0;
     v_color0 = a_color0;
     v_fog = fog;
     v_light = light;

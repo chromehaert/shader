@@ -47,7 +47,6 @@ void main() {
     float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
     vec4 fog = vec4(FogColor.rgb, fogIntensity);
 
-    v_texcoord0 = texcoord0;
     v_color0 = a_color0;
     v_fog = fog;
     v_light = light;

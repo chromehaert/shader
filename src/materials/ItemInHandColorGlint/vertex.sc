@@ -54,7 +54,6 @@ void main() {
     glintuv.xy = calculateLayerUV(texcoord0, UVAnimation.x, UVAnimation.z, UVScale.xy);
     glintuv.zw = calculateLayerUV(texcoord0, UVAnimation.y, UVAnimation.w, UVScale.xy);
 
-    v_texcoord0 = texcoord0;
     v_glintuv = glintuv;
     v_color0 = a_color0;
     v_fog = fog;
