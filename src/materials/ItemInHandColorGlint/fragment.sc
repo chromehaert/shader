@@ -37,7 +37,7 @@ void main() {
     }
   #endif
 
-    albedo = applyGlint(albedo, v_glintuv, s_MatTexture1, GlintColor, TileLightColor);
+    albedo = applyGlint(albedo, v_glintuv, s_GlintTexture, GlintColor, TileLightColor);
 
   albedo = applyLighting(albedo, v_light);
 
