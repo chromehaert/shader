@@ -13,7 +13,7 @@
 
 void main() {
   #ifndef INSTANCING
-    gl_FragColor = vec4(v_color0, 1.0);
+    gl_FragColor = v_color0;
   #else
     gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
   #endif
