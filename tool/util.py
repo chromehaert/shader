@@ -57,7 +57,6 @@ def create_pack_manifest(config: dict) -> dict:
                 'version': config['version']
             }
         ],
-        'subpacks': [],
         'metadata': {
             'authors': config['authors'],
             'url': config['url']

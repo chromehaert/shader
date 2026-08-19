@@ -163,26 +163,6 @@ def run(args):
 
     _build(status, args.p, "default", pack_config['materials'], mats_dir)
 
-    for subpack in pack_config['subpack']:
-        subpack_name: str = subpack['define'].lower()
-        subpack_path = os.path.join(pack_dir, 'subpacks', subpack_name)
-        subpack_mats_path = os.path.join(subpack_path, 'renderer', 'materials')
-        mats = subpack['materials']
-
-        if not os.path.exists(subpack_path):
-            os.makedirs(subpack_path)
-
-        if mats:
-            _build(status, args.p, subpack_name, mats, subpack_mats_path)
-
-        pack_manifest['subpacks'].append(
-            {
-                'folder_name': subpack_name,
-                'name': subpack['description'].rstrip(),
-                'memory_tier': 1
-            }
-        )
-
     status.stop()
 
     with open(os.path.join(pack_dir, 'manifest.json'), 'w') as f:
