@@ -8,8 +8,6 @@
 #ifndef INSTANCING
   uniform vec4 SkyColor;
   uniform vec4 FogColor;
-  uniform vec4 FogAndDistanceControl;
-  uniform vec4 ViewPositionAndTime;
 #endif
 
 void main() {
@@ -17,7 +15,7 @@ void main() {
     vec4 pos = vec4(a_position.xzy, 1.0);
     pos.xy = 2.0*clamp(pos.xy, -0.5, 0.5);
 
-    vec4 v_color0 = mix(SkyColor, FogColor, a_color0.x);
+    v_color0 = mix(SkyColor, FogColor, a_color0.x);
 
     gl_Position = pos;
   #else
