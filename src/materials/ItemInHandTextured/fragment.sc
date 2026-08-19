@@ -19,6 +19,8 @@ void main() {
 
   vec4 albedo = MatColor * texture2D(s_MatTexture, v_texcoord0);
 
+  float albedoAlpha = albedo.a;
+
   #ifdef ALPHA_TEST
     if (albedo.a < 0.5) {
       discard;
@@ -35,7 +37,11 @@ void main() {
 
   albedo = applyOverlayColor(albedo, OverlayColor);
 
-  albedo = applyLighting(albedo, v_light);
+  if (((albedoAlpha > 0.9875) && (albedoAlpha < 0.995))) {
+    albedo.rgb *= vec3(1.0, 1.0, 1.0);
+  } else {
+    albedo = applyLighting(albedo, v_light);
+  };
 
   albedo.rgb = mix(albedo.rgb, v_fog.rgb, v_fog.a);
 
