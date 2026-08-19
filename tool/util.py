@@ -56,7 +56,12 @@ def create_pack_manifest(config: dict) -> dict:
                 'uuid': '900f3d8b-37b4-465f-8f56-941687e36c35',
                 'version': config['version']
             }
-        ]
+        ],
+        'subpacks': [],
+        'metadata': {
+            'authors': config['authors'],
+            'url': config['url']
+        }
     }
 
 
