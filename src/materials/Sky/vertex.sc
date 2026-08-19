@@ -17,9 +17,7 @@ void main() {
     vec4 pos = vec4(a_position.xzy, 1.0);
     pos.xy = 2.0*clamp(pos.xy, -0.5, 0.5);
 
-    vec3 v_color0 = mix(SkyColor, FogColor, a_color0.x);
-
-    v_worldPos = mul(u_invViewProj, pos).xyz;
+    vec3 v_color0 = mix(SkyColor.rgb, FogColor.rgb, a_color0.x);
 
     gl_Position = pos;
   #else
