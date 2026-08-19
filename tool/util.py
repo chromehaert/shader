@@ -10,7 +10,7 @@ NS_DEV_SHADERC_URL_PREFIX = NS_DEV_RELEASE + "shaderc-"
 SHADERC_PATH = os.path.join('tool', 'data', 'shaderc')
 if os.name == 'nt':
     SHADERC_PATH += ".exe"
-SRC_MATERIALS_EG_PATH = os.path.join('tool', 'data', 'materials', 'Sky.material.json')
+SRC_MATERIALS_EG_PATH = os.path.join('tool', 'data', 'materials')
 
 
 def print_styled_error(console: Console, log: str):
@@ -56,11 +56,7 @@ def create_pack_manifest(config: dict) -> dict:
                 'uuid': '900f3d8b-37b4-465f-8f56-941687e36c35',
                 'version': config['version']
             }
-        ],
-        'metadata': {
-            'authors': config['authors'],
-            'url': config['url']
-        }
+        ]
     }
 
 
