@@ -6,13 +6,9 @@ $output v_color0
 
 #include <bgfx_shader.sh>
 
- uniform vec4 CloudColor;
+uniform vec4 CloudColor;
 uniform vec4 FogColor;
-uniform vec4 FogAndDistanceControl;
-uniform vec4 ViewPositionAndTime;
-uniform vec4 TimeOfDay;
-uniform vec4 CameraPosition;
-uniform vec4 Day;
+uniform vec4 DistanceControl;
 
 void main() {
   #ifdef INSTANCING
@@ -26,8 +22,8 @@ void main() {
   vec4 color = a_color0 * CloudColor;
 
   // fade toward fog color with distance instead of fading to transparent
-  float fogFade = clamp(2.0-length(worldPos*vec3(0.005, 0.002, 0.005)), 0.0, 1.0);
-  color.rgb = mix(FogColor.rgb, color.rgb, fogFade);
+  float fogFade = clamp(1.0 - max((length(worldPos) / DistanceControl.x) - 1.2, 0.0), 0.0, 1.0);
+  color.a = fogFade;
 
   v_color0 = color;
 

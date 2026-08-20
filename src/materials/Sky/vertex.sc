@@ -12,12 +12,11 @@
 
 void main() {
   #ifndef INSTANCING
-    vec4 pos = vec4(a_position.xzy, 1.0);
-    pos.xy = 2.0*clamp(pos.xy, -0.5, 0.5);
-
+    vec4 pos = vec4(a_position.xyz, 1.0);
+    
     v_color0 = mix(SkyColor, FogColor, a_color0.x);
 
-    gl_Position = pos;
+    gl_Position = mul(u_modelViewProj, pos);
   #else
     gl_Position = vec4(0.0, 0.0, 0.0, 0.0);
   #endif
