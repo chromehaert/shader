@@ -5,12 +5,12 @@ $input a_color0, a_position, a_texcoord0, a_texcoord1
 $output v_color0, v_fog, v_texcoord0, v_lightmapUV
 
 #include <bgfx_shader.sh>
-#include <utils/fog.h>
+#include <MinecraftRenderer.Materials/FogUtil.dragonh>
 
-uniform vec4 RenderChunkFogAlpha;
-uniform vec4 FogAndDistanceControl;
+uniform vec4 FogControl;
 uniform vec4 ViewPositionAndTime;
 uniform vec4 FogColor;
+
 
 void main() {
   #ifdef INSTANCING
@@ -34,7 +34,9 @@ void main() {
   vec3 modelCamPos = ViewPositionAndTime.xyz - worldPos;
   float relativeDepth = length(modelCamPos) / FogAndDistanceControl.w;
 
-  vec4 fogColor = vec4(FogColor.rgb, calculateFogFade(relativeDepth, FogAndDistanceControl));
+  float cameraDepth = position.z;
+  float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
+  vec4 fog = vec4(FogColor.rgb, fogIntensity);
 
   #ifdef TRANSPARENT
     if (a_color0.a < 0.95) {
@@ -50,7 +52,7 @@ void main() {
   v_texcoord0 = uv0;
   v_lightmapUV = uv1;
   v_color0 = color;
-  v_fog = fogColor;
+  v_fog = fog;
 
   gl_Position = mul(u_viewProj, vec4(worldPos, 1.0));
 }
