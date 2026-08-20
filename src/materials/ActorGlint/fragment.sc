@@ -52,11 +52,7 @@ void main() {
 
     albedo = applyGlint(albedo, v_glintuv, s_MatTexture1, GlintColor, TileLightColor);
 
-  #if defined(EMISSIVE) || defined(EMISSIVE_ONLY)
-  albedo = albedo;
-  #else
   albedo = applyLighting(albedo, v_light);
-  #endif
 
   #ifdef TRANSPARENT
     albedo = applyHudOpacity(albedo, HudOpacity.x);
