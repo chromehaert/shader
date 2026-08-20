@@ -34,9 +34,8 @@ void main() {
   vec3 modelCamPos = ViewPositionAndTime.xyz - worldPos;
   float relativeDepth = length(modelCamPos) / FogAndDistanceControl.w;
 
-  float cameraDepth = worldPos.z;
-  float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
-  vec4 fog = vec4(FogColor.rgb, fogIntensity);
+  float fogControl = clamp(( length(worldPos) / FogAndDistanceControl.z - 0.5) / 0.5, 0.0, 1.0);
+  vec4 fog = vec4(FogColor.rgb, smoothstep(0.0, 1.0, fogControl));
 
   #ifdef TRANSPARENT
     if (a_color0.a < 0.95) {
