@@ -49,7 +49,11 @@ void main() {
 
   albedo = applyOverlayColor(albedo, OverlayColor);
 
+  #if defined(EMISSIVE) || defined(EMISSIVE_ONLY)
+  albedo = albedo;
+  #else
   albedo = applyLighting(albedo, v_light);
+  #endif
 
   #ifdef TRANSPARENT
     albedo = applyHudOpacity(albedo, HudOpacity.x);
