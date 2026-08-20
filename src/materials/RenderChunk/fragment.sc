@@ -21,7 +21,7 @@ void main() {
       }
     #endif
 
-    float diffuseAlpha = diffuse.a;
+    highp float diffuseAlpha = diffuse.a;
 
     #if defined(SEASONS) && (defined(ALPHA_TEST) || defined(OPAQUE))
       diffuse.rgb *= mix(vec3_splat(1.0), 2.0 * texture2D(s_SeasonsTexture, v_color0.xy).rgb, v_color0.y);
