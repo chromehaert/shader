@@ -34,7 +34,7 @@ void main() {
   vec3 modelCamPos = ViewPositionAndTime.xyz - worldPos;
   float relativeDepth = length(modelCamPos) / FogAndDistanceControl.w;
 
-  float cameraDepth = position.z;
+  float cameraDepth = worldPos.z;
   float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
   vec4 fog = vec4(FogColor.rgb, fogIntensity);
 
