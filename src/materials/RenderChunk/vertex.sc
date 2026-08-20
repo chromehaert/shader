@@ -7,7 +7,9 @@ $output v_color0, v_fog, v_texcoord0, v_lightmapUV
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/FogUtil.dragonh>
 
+uniform vec4 MeshContext;
 uniform vec4 FogAndDistanceControl;
+uniform vec4 RenderChunkFogAlpha;
 uniform vec4 ViewPositionAndTime;
 uniform vec4 FogColor;
 uniform vec4 FogControl;
@@ -34,8 +36,16 @@ void main() {
   vec3 modelCamPos = ViewPositionAndTime.xyz - worldPos;
   float relativeDepth = length(modelCamPos) / FogAndDistanceControl.w;
 
-  float fogControl = clamp(( length(worldPos) / FogAndDistanceControl.z - 0.5) / 0.5, 0.0, 1.0);
-  vec4 fog = vec4(FogColor.rgb, smoothstep(0.0, 1.0, fogControl));
+  vec4 fogSettings = MeshContext.x > 0.5 ? vec4(0.99, 1.0, 100000.0, 100000.0) : FogAndDistanceControl;
+  float fogNear   = fogSettings.x;
+  float fogFar    = fogSettings.y;
+  float fogRange  = fogSettings.z;
+  
+  float distToCamera = length(ViewPositionAndTime.xyz - worldPos);
+  float fogProgress = distToCamera / fogRange + RenderChunkFogAlpha.x;
+  float fogAmount = clamp((fogProgress - fogNear) / (fogFar - fogNear), 0.0, 1.0);
+
+  vec4 fog = vec4(FogColor.xyz, fogAmount);
 
   #ifdef TRANSPARENT
     if (a_color0.a < 0.95) {
