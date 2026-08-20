@@ -7,10 +7,10 @@ $output v_color0, v_fog, v_texcoord0, v_lightmapUV
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/FogUtil.dragonh>
 
-uniform vec4 FogControl;
+uniform vec4 FogAndDistanceControl;
 uniform vec4 ViewPositionAndTime;
 uniform vec4 FogColor;
-
+uniform vec4 FogControl;
 
 void main() {
   #ifdef INSTANCING
