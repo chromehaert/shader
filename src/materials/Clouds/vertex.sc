@@ -22,7 +22,7 @@ void main() {
   vec4 color = a_color0 * CloudColor;
 
   // fade toward fog color with distance instead of fading to transparent
-  float fogFade = clamp(1.0 - max((length(worldPos) / DistanceControl.x) - 1.2, 0.0), 0.0, 1.0);
+  float fogFade = clamp(1.0 - max((length(worldPos) / DistanceControl.x) - 1.9, 0.0), 0.0, 1.0);
   color.a = fogFade;
 
   v_color0 = color;
