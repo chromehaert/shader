@@ -14,7 +14,10 @@ void main() {
   #ifndef INSTANCING
     vec4 pos = vec4(a_position.xyz, 1.0);
     
-    v_color0 = mix(SkyColor, FogColor, a_color0.x);
+    float t = clamp((SkyColor.z - 0.5) / 0.5, 0.0, 1.0);
+    vec4 colorMultiplier = vec4(mix(1.0, 1.35, t), 1.0, 1.0, 1.0);
+    
+    v_color0 = mix(SkyColor * colorMultiplier, FogColor, a_color0.x);
 
     gl_Position = mul(u_modelViewProj, pos);
   #else
