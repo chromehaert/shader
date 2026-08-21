@@ -6,6 +6,7 @@ $output v_color0, v_fog, v_texcoord0, v_lightmapUV
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/FogUtil.dragonh>
+#include <utils/fog.h>
 
 uniform vec4 FogAndDistanceControl;
 uniform vec4 RenderChunkFogAlpha;
