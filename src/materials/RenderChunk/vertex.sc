@@ -35,7 +35,7 @@ void main() {
     vec3 modelCamPos = (ViewPositionAndTime.xyz - worldPos);
     float camDis = length(modelCamPos);
     vec4 fogColor;
-    fogColor.a = clamp(((((camDis / FogAndDistanceControl.z) + RenderChunkFogAlpha.x) - (0.3 + FogAndDistanceControl.x)) / (0.3 + (FogAndDistanceControl.y - FogAndDistanceControl.x))), 0.0, 1.0);
+    fogColor.a = clamp(((((camDis / FogAndDistanceControl.z) + RenderChunkFogAlpha.x) - (0.25 + FogAndDistanceControl.x)) / (0.25 + (FogAndDistanceControl.y - FogAndDistanceControl.x))), 0.0, 1.0);
     fogColor = vec4(FogColor.rgb, smoothstep(0.0,1.0,fogColor.a));
 
   #ifdef TRANSPARENT
