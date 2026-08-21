@@ -51,8 +51,10 @@ void main() {
     light.rgb = vec3(grayscale,grayscale,grayscale);
 
     float cameraDepth = position.z;
-    float fogIntensity = calculateFogIntensity(cameraDepth, FogControl.z, FogControl.x, FogControl.y);
-    vec4 fog = vec4(FogColor.rgb, fogIntensity);
+    float camDis = length(cameraDepth);
+    vec4 fogColor;
+    fogColor.a = clamp((((camDis / FogControl.z) - (0.25 + FogControl.x)) / (0.25 + (FogControl.y - FogControl.x))), 0.0, 1.0);
+    fogColor = vec4(FogColor.rgb, smoothstep(0.0,1.0,fogColor.a));
 
     vec4 glintuv;
     glintuv.xy = calculateLayerUV(texcoord0, UVAnimation.x, UVAnimation.z, UVScale.xy);
@@ -61,7 +63,7 @@ void main() {
     v_texcoord0 = texcoord0;
     v_glintuv = glintuv;
     v_color0 = a_color0;
-    v_fog = fog;
+    v_fog = fogColor;
     v_light = light;
   #endif
 

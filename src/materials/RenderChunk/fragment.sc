@@ -15,13 +15,13 @@ void main() {
   #ifndef DEPTH_ONLY_OPAQUE
     vec4 diffuse = texture2D(s_MatTexture, v_texcoord0);
 
+    highp float diffuseAlpha = diffuse.a;
+
     #ifdef ALPHA_TEST
       if (diffuse.a < 0.5) {
         discard;
       }
     #endif
-
-    highp float diffuseAlpha = diffuse.a;
 
     #if defined(SEASONS) && (defined(ALPHA_TEST) || defined(OPAQUE))
       diffuse.rgb *= mix(vec3_splat(1.0), 2.0 * texture2D(s_SeasonsTexture, v_color0.xy).rgb, v_color0.y);
