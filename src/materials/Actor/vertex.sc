@@ -9,6 +9,7 @@ $output v_color0, v_fog, v_light, v_texcoord0
 #include <MinecraftRenderer.Materials/DynamicUtil.dragonh>
 #include <MinecraftRenderer.Materials/TAAUtil.dragonh>
 #include <MinecraftRenderer.Materials/FogUtil.dragonh>
+#include <utils/fog.h>
 
 uniform vec4 OverlayColor;
 uniform vec4 TileLightColor;
@@ -52,7 +53,7 @@ void main() {
     float cameraDepth = position.z;
     float camDis = length(cameraDepth);
     vec4 fogColor;
-    fogColor.a = clamp((((camDis / FogControl.z) - (0.25 + FogControl.x)) / (0.25 + (FogControl.y - FogControl.x))), 0.0, 1.0);
+    fogColor.a = calculateFog(camDis, FogControl);
     fogColor = vec4(FogColor.rgb, smoothstep(0.0,1.0,fogColor.a));
 
     v_texcoord0 = texcoord0;
