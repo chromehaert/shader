@@ -17,9 +17,11 @@ void main() {
     mat4 model = u_model[0];
   #endif
 
-  a_position.y -= 18.0;
+  vec4 position = vec4(a_position, 1.0);
 
-  vec3 worldPos = mul(model, vec4(a_position, 1.0)).xyz;
+  position.y -= 18.0;
+
+  vec3 worldPos = mul(model, position).xyz;
 
   vec4 color = a_color0 * CloudColor;
 
