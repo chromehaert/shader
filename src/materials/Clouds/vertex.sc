@@ -17,12 +17,14 @@ void main() {
     mat4 model = u_model[0];
   #endif
 
+  a_position.y -= 18.0;
+
   vec3 worldPos = mul(model, vec4(a_position, 1.0)).xyz;
 
   vec4 color = a_color0 * CloudColor;
 
-  float fogFade = clamp(1.0 - max((length(worldPos) / (DistanceControl.x * 1.2)) - 0.9, 0.0), 0.0, 1.0);
-  color.a = fogFade * 0.8;
+  float fogFade = clamp(1.0 - max((length(worldPos) / (DistanceControl.x * 1.25)) - 0.9, 0.0), 0.0, 1.0);
+  color.a = fogFade * 0.9;
 
   v_color0 = color;
 
